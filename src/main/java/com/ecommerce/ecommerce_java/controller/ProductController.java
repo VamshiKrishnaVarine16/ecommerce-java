@@ -3,8 +3,8 @@ package com.ecommerce.ecommerce_java.controller;
 import com.ecommerce.ecommerce_java.model.Product;
 import com.ecommerce.ecommerce_java.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -21,8 +21,12 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        Product product = productService.getProductById(id);
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+    }
+        return ResponseEntity.ok(product);
     }
 
     @PostMapping
