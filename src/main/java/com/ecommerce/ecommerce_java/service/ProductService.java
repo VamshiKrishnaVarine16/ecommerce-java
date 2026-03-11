@@ -10,4 +10,6 @@ public interface ProductService {
     Product createProduct(Product product);
     void deleteProduct(Long id);
     Product updateProduct(Long id, Product product);
+    List<Product> getProductsByCategory(String category);
+    List<Product> searchProductsByName(String name);
 }

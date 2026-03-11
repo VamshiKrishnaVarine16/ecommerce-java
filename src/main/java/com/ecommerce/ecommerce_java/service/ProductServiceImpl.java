@@ -47,4 +47,14 @@ public class ProductServiceImpl implements ProductService {
         existing.setImageUrl(product.getImageUrl());
         return productRepository.save(existing);
     }
+
+    @Override
+    public List<Product> getProductsByCategory(String category) {
+        return productRepository.findByCategory(category);
+    }
+
+    @Override
+    public List<Product> searchProductsByName(String name) {
+        return productRepository.findByNameContaining(name);
+    }
 }
