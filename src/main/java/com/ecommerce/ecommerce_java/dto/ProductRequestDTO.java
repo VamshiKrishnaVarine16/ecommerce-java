@@ -1,12 +1,26 @@
 package com.ecommerce.ecommerce_java.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 public class ProductRequestDTO {
 
+    @NotBlank(message = "Name cannot be empty")
     private String name;
+
     private String description;
+
+    @NotNull(message = "Price cannot be null")
+    @Positive(message = "Price must be greater than 0")
     private double price;
+
+    @Positive(message = "Stock quantity must be greater than 0")
     private int stockQuantity;
+
+    @NotBlank(message = "Category cannot be empty")
     private String category;
+
     private String imageUrl;
 
     // Getters and Setters

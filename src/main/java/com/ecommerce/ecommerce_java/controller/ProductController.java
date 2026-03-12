@@ -5,6 +5,9 @@ import com.ecommerce.ecommerce_java.dto.ProductRequestDTO;
 import com.ecommerce.ecommerce_java.dto.ProductResponseDTO;
 import com.ecommerce.ecommerce_java.model.Product;
 import com.ecommerce.ecommerce_java.service.ProductService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,13 +41,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO dto) {
+    public ResponseEntity<ProductResponseDTO> createProduct(@Valid @RequestBody ProductRequestDTO dto) {
         Product product = productService.createProduct(ProductMapper.toEntity(dto));
         return ResponseEntity.status(201).body(ProductMapper.toResponseDTO(product));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDTO dto) {
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequestDTO dto) {
         Product updated = productService.updateProduct(id, ProductMapper.toEntity(dto));
         if (updated == null) {
             return ResponseEntity.notFound().build();
