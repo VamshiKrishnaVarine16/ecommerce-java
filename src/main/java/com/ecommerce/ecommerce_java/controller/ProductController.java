@@ -8,10 +8,11 @@ import com.ecommerce.ecommerce_java.service.ProductService;
 
 import jakarta.validation.Valid;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.domain.Page;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,6 +54,15 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(ProductMapper.toResponseDTO(updated));
+    }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<ProductResponseDTO>> getAllProductsPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<ProductResponseDTO> products = productService.getAllProductsPaginated(page, size)
+                .map(ProductMapper::toResponseDTO);
+        return ResponseEntity.ok(products);
     }
 
     @DeleteMapping("/{id}")
