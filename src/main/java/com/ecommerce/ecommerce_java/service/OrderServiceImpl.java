@@ -30,8 +30,9 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         List<Cart> cartItems = cartRepository.findByUser(user);
+
         if (cartItems.isEmpty()) {
-            throw new RuntimeException("Cart is empty");
+            throw new IllegalStateException("Your cart is empty. Please add products before placing an order.");
         }
 
         Order order = new Order();
