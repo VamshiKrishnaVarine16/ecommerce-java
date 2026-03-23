@@ -8,4 +8,5 @@ public interface OrderService {
     Order placeOrder(String username);
     List<Order> getOrdersByUser(String username);
     Order getOrderById(Long orderId);
+    Order updateOrderStatus(Long orderId, String status);
 }

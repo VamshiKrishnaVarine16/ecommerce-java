@@ -35,4 +35,11 @@ public class OrderController {
         }
         return ResponseEntity.ok(order);
     }
+
+    @PutMapping("/{orderId}/status")
+    public ResponseEntity<Order> updateOrderStatus(@PathVariable Long orderId,
+                                                @RequestParam String status) {
+        Order order = orderService.updateOrderStatus(orderId, status);
+        return ResponseEntity.ok(order);
+    }
 }
