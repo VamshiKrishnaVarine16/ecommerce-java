@@ -1,6 +1,9 @@
 package com.ecommerce.ecommerce_java.dto;
 
+import com.ecommerce.ecommerce_java.model.OrderItem;
 import com.ecommerce.ecommerce_java.model.Product;
+import com.ecommerce.ecommerce_java.model.Order;
+import com.ecommerce.ecommerce_java.model.OrderItem;
 
 public class ProductMapper {
 
@@ -24,6 +27,29 @@ public class ProductMapper {
         dto.setStockQuantity(product.getStockQuantity());
         dto.setCategory(product.getCategory());
         dto.setImageUrl(product.getImageUrl());
+        return dto;
+    }
+
+    public static OrderItemResponseDTO toOrderItemResponseDTO(OrderItem orderItem) {
+        OrderItemResponseDTO dto = new OrderItemResponseDTO();
+        dto.setId(orderItem.getId());
+        dto.setProductName(orderItem.getProduct().getName());
+        dto.setQuantity(orderItem.getQuantity());
+        dto.setPrice(orderItem.getPrice());
+        dto.setSubtotal(orderItem.getPrice() * orderItem.getQuantity());
+        return dto;
+    }
+
+    public static OrderResponseDTO toOrderResponseDTO(Order order) {
+        OrderResponseDTO dto = new OrderResponseDTO();
+        dto.setId(order.getId());
+        dto.setUsername(order.getUser().getUsername());
+        dto.setOrderItems(order.getOrderItems().stream()
+                .map(ProductMapper::toOrderItemResponseDTO)
+                .collect(java.util.stream.Collectors.toList()));
+        dto.setTotalAmount(order.getTotalAmount());
+        dto.setStatus(order.getStatus());
+        dto.setOrderDate(order.getOrderDate());
         return dto;
     }
 }
