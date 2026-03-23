@@ -1,5 +1,7 @@
 package com.ecommerce.ecommerce_java.controller;
 
+import com.ecommerce.ecommerce_java.dto.CartResponseDTO;
+import com.ecommerce.ecommerce_java.dto.ProductMapper;
 import com.ecommerce.ecommerce_java.model.Cart;
 import com.ecommerce.ecommerce_java.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cart")
@@ -17,16 +20,20 @@ public class CartController {
     private CartService cartService;
 
     @PostMapping("/add")
-    public ResponseEntity<Cart> addToCart(Principal principal,
-                                          @RequestParam Long productId,
-                                          @RequestParam int quantity) {
+    public ResponseEntity<CartResponseDTO> addToCart(Principal principal,
+                                                      @RequestParam Long productId,
+                                                      @RequestParam int quantity) {
         Cart cart = cartService.addToCart(principal.getName(), productId, quantity);
-        return ResponseEntity.status(201).body(cart);
+        return ResponseEntity.status(201).body(ProductMapper.toCartResponseDTO(cart));
     }
 
     @GetMapping
-    public ResponseEntity<List<Cart>> getCartItems(Principal principal) {
-        return ResponseEntity.ok(cartService.getCartItems(principal.getName()));
+    public ResponseEntity<List<CartResponseDTO>> getCartItems(Principal principal) {
+        List<CartResponseDTO> cartItems = cartService.getCartItems(principal.getName())
+                .stream()
+                .map(ProductMapper::toCartResponseDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(cartItems);
     }
 
     @DeleteMapping("/{cartItemId}")

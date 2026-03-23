@@ -2,8 +2,10 @@ package com.ecommerce.ecommerce_java.dto;
 
 import com.ecommerce.ecommerce_java.model.OrderItem;
 import com.ecommerce.ecommerce_java.model.Product;
+import com.ecommerce.ecommerce_java.model.Cart;
 import com.ecommerce.ecommerce_java.model.Order;
 import com.ecommerce.ecommerce_java.model.OrderItem;
+import com.ecommerce.ecommerce_java.model.Cart;
 
 public class ProductMapper {
 
@@ -16,6 +18,17 @@ public class ProductMapper {
         product.setCategory(dto.getCategory());
         product.setImageUrl(dto.getImageUrl());
         return product;
+    }
+
+    public static CartResponseDTO toCartResponseDTO(Cart cart) {
+        CartResponseDTO dto = new CartResponseDTO();
+        dto.setId(cart.getId());
+        dto.setProductName(cart.getProduct().getName());
+        dto.setCategory(cart.getProduct().getCategory());
+        dto.setQuantity(cart.getQuantity());
+        dto.setPrice(cart.getPrice());
+        dto.setSubtotal(cart.getPrice() * cart.getQuantity());
+        return dto;
     }
 
     public static ProductResponseDTO toResponseDTO(Product product) {
